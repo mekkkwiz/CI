@@ -18,6 +18,7 @@ def makedata(x, window=4):
   return X1, X2, Y
 
 X1,X2,Y = makedata(x)
-print(X1)
-print(X2)
-print(Y)
+
+# print(X1)
+# print(X2)
+# print(Y)
