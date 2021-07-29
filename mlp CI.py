@@ -1,11 +1,16 @@
 import numpy as np
-# import matplotlib.py as plt
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from random import random
 from fillspace import *
+from cross_val import cross_validation_split
+from re import X
+
 
 class MLP(object):
     """A Multilayer Perceptron class.
     """
+    output_l = []
 
     def __init__(self, num_inputs = 8, hidden_layers = [7], num_outputs = 1):
         """Constructor for the MLP. Takes the number of inputs,
@@ -137,6 +142,8 @@ class MLP(object):
                 # keep track of the MSE for reporting later
                 sum_errors += self._mse(target, output)
 
+            self.output_l.append(output)
+
             # Epoch complete, report the training error
             print("Error: {} at epoch {}".format(sum_errors / len(items), i+1))
 
@@ -194,26 +201,78 @@ class MLP(object):
         """
         return np.average((target - output) ** 2)
 
-    
+# ------------------------------------------------------------------------------
 
 # create a dataset to train a network for the sum operation
-items = np.array([X1[i]+X2[i] for i in range(len(Y))])
 
-targets = np.array([Y[i] for i in range(len(Y))])
+# items = np.array([X1[i]+X2[i] for i in range(len(Y))])
 
-# create a Multilayer Perceptron with one hidden layer
-mlp = MLP(8, [7], 1)
+# targets = np.array([Y[i] for i in range(len(Y))])
 
-# train network
-mlp.train(items, targets, 1000, 0.5)
+# # create a Multilayer Perceptron with one hidden layer
+# mlp = MLP(8, [7], 1)
 
-# create dummy data
-_input = [360,357,355,354,328,328,325,322]
-input = np.array(normalize_list(_input,spt))
-target = np.array(normalize(305,spt))
+# # train network
+# mlp.train(items, targets, 10000, 0.5)
 
-# get a prediction
-output = mlp.forward_propagate(input)
+# # create dummy data
+# _input = [360,357,355,354,328,328,325,322]
+# input = np.array(normalize_list(_input))
+# target = np.array(normalize(305))
 
+# # get a prediction
+# output = mlp.forward_propagate(input)
+
+# print()
+# print("if station 1 have {} \nstation 2 have {} \nIn the next 7 hours the water level should be {}".format(denomallize(input[0:4]), denomallize(input[3:8]), denomallize(output)))
+# print()
+
+
+
+error_log = []
+desired = []
+calculate = []
+
+k=10
+folds = cross_validation_split(m_x, k)
+
+for i in range(k):
+    
+    _k = len(folds[i])
+    # print(folds[i][0:_k-1])
+    items = np.array([folds[i][j][0:len(folds[i][j])-1] for j in range(len(folds[i]))])
+    # print(items)
+    targets = np.array([folds[i][j][len(folds[i][j])-1] for j in range(len(folds[i]))])
+    # print(targets)
+    # create a Multilayer Perceptron with one hidden layer
+    mlp = MLP(8, [7], 1)
+
+    # train network
+    mlp.train(items, targets, 1000, 0.5)
+
+    _input = folds[i][_k-1][0:len(folds[i][_k-1])-1]
+    input = np.array(_input)
+    target = np.array((folds[i][_k-1][len(folds[i][_k-1])-1]))
+
+    output = mlp.forward_propagate(input)
+    desired.append(denomallize(target))
+    calculate.append(denomallize(output))
+
+    print()
+    print("if station 1 have {} \nstation 2 have {} \nIn the next 7 hours the water level should be {}".format(denomallize(input[0:4]), denomallize(input[3:8]), denomallize(output)))
+    print("but actually should be {}".format(denomallize(target)))
+    print()
+
+    error_log.append(abs(denomallize(target)-denomallize(output))*100/denomallize(target))
+
+
+for i in range(10):
+    print("error round {} : {:.2f}%".format(i,error_log[i][0]))
 print()
-print("Our network believes that {} flood levels is {}".format(denomallize(input,spt), denomallize(output,spt)))
+
+plt.subplots()      
+plt.ylabel('water level')
+desired, = plt.plot(desired, "ro", label=f"desired output")
+calculate, = plt.plot(calculate, "bo", label=f"calculate output")
+plt.legend()
+plt.show()

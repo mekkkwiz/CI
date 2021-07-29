@@ -326,22 +326,23 @@ x = """
 365	363	360	357	333	331	328	328	307
 363	360	357	355	331	328	328	325	305
 360	357	355	354	328	328	325	322	305"""
+spt = list(map(int, x.split()))
 
-def denomallize_list(x,ref):
+def denomallize_list(x,ref=spt):
   return [x[i] * (max(ref) - min(ref)) + min(ref) for i in range(len(x))]
 
-def denomallize(x,ref):
+def denomallize(x,ref=spt):
   return x * (max(ref) - min(ref)) + min(ref)
 
 
-def normalize_list(x,ref):
+def normalize_list(x,ref=spt):
   return [((x[i]-min(ref))/(max(ref)-min(ref))) for i in range(len(x))]
 
-def normalize(x,ref):
+def normalize(x,ref=spt):
   return ((x-min(ref))/(max(ref)-min(ref)))
 
 
-spt = list(map(int, x.split()))
+
 # print(spt)
 normalized = normalize_list(spt,spt)
 # print(normalized)
@@ -350,6 +351,10 @@ normalized = normalize_list(spt,spt)
 
 X1,X2,Y = makedata(normalized)
 
+m_x = []
+for i in range(len(Y)):
+  m_x.append((X1[i])+(X2[i])+[(Y[i])])
 # print(X1)
 # print(X2)
 # print(Y)
+# print(m_x)

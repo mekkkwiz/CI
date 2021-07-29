@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from random import random
 from fillspace import X1, X2, Y
 
@@ -6,6 +7,10 @@ from fillspace import X1, X2, Y
 # print(items)
 # targets = np.array([Y[i] for i in range(len(Y))])
 # print(targets)
-x = X1
-normalized = [((x[i]-min(x))/(max(x)-min(x))) for i in range(len(x))]
-print(normalized)
+# x = X1
+# normalized = [((x[i]-min(x))/(max(x)-min(x))) for i in range(len(x))]
+# print(normalized)
+
+plt.plot([1, 2, 3, 4])
+plt.ylabel('some numbers')
+plt.show()
