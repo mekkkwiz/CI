@@ -1,25 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from random import random
 from fillspace import *
 from cross_val import cross_validation_split
 from re import X
 
 
 class MLP(object):
-    """A Multilayer Perceptron class.
-    """
+    """A Multilayer Perceptron class."""
+
+
     output_l = []
 
     def __init__(self, num_inputs = 8, hidden_layers = [7], num_outputs = 1):
-        """Constructor for the MLP. Takes the number of inputs,
-            a variable number of hidden layers, and number of outputs
-        Args:
-            num_inputs (int): Number of inputs
-            hidden_layers (list): A list of ints for the hidden layers
-            num_outputs (int): Number of outputs
-        """
 
         self.num_inputs = num_inputs
         self.hidden_layers = hidden_layers
@@ -51,13 +43,6 @@ class MLP(object):
 
 
     def forward_propagate(self, inputs):
-        """Computes forward propagation of the network based on input signals.
-        Args:
-            inputs (ndarray): Input signals
-        Returns:
-            activations (ndarray): Output values
-        """
-
         # the input layer activation is just the input itself
         activations = inputs
 
@@ -80,13 +65,6 @@ class MLP(object):
 
 
     def back_propagate(self, error):
-        """Backpropogates an error signal.
-        Args:
-            error (ndarray): The error to backprop.
-        Returns:
-            error (ndarray): The final error of the input
-        """
-
         # iterate backwards through the network layers
         for i in reversed(range(len(self.derivatives))):
 
@@ -113,13 +91,6 @@ class MLP(object):
 
 
     def train(self, inputs, targets, epochs, learning_rate):
-        """Trains model running forward prop and backprop
-        Args:
-            inputs (ndarray): X
-            targets (ndarray): Y
-            epochs (int): Num. epochs we want to train the network for
-            learning_rate (float): Step to apply to gradient descent
-        """
         # now enter the training loop
         for i in range(epochs):
             sum_errors = 0
@@ -148,14 +119,10 @@ class MLP(object):
             print("Error: {} at epoch {}".format(sum_errors / len(items), i+1))
 
         print("Training complete!")
-        print("=====")
+        print("===========================================")
 
 
     def gradient_descent(self, learningRate=1):
-        """Learns by descending the gradient
-        Args:
-            learningRate (float): How fast to learn.
-        """
         # update the weights by stepping down the gradient
         for i in range(len(self.weights)):
             weights = self.weights[i]
@@ -164,13 +131,6 @@ class MLP(object):
 
 
     def _sigmoid(self, x):
-        """Sigmoid activation function
-        Args:
-            x (float): Value to be processed
-        Returns:
-            y (float): Output
-        """
-        # return 4*x
         y = 1.0 / (1 + np.exp(-x))
         return y
 
@@ -178,13 +138,6 @@ class MLP(object):
         return np.maximum(Z, 0)
 
     def _sigmoid_derivative(self, x):
-        """Sigmoid derivative function
-        Args:
-            x (float): Value to be processed
-        Returns:
-            y (float): Output
-        """
-        # return 4
         return x * (1.0 - x)
 
     def ReLU_deriv(Z):
@@ -192,41 +145,9 @@ class MLP(object):
 
 
     def _mse(self, target, output):
-        """Mean Squared Error loss function
-        Args:
-            target (ndarray): The ground trut
-            output (ndarray): The predicted values
-        Returns:
-            (float): Output
-        """
         return np.average((target - output) ** 2)
 
 # ------------------------------------------------------------------------------
-
-# create a dataset to train a network for the sum operation
-
-# items = np.array([X1[i]+X2[i] for i in range(len(Y))])
-
-# targets = np.array([Y[i] for i in range(len(Y))])
-
-# # create a Multilayer Perceptron with one hidden layer
-# mlp = MLP(8, [7], 1)
-
-# # train network
-# mlp.train(items, targets, 10000, 0.5)
-
-# # create dummy data
-# _input = [360,357,355,354,328,328,325,322]
-# input = np.array(normalize_list(_input))
-# target = np.array(normalize(305))
-
-# # get a prediction
-# output = mlp.forward_propagate(input)
-
-# print()
-# print("if station 1 have {} \nstation 2 have {} \nIn the next 7 hours the water level should be {}".format(denomallize(input[0:4]), denomallize(input[3:8]), denomallize(output)))
-# print()
-
 
 
 error_log = []
