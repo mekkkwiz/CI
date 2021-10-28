@@ -1,4 +1,0 @@
-Error: 0.0007491677291545174 at epoch 1000 mlp = MLP(8, [7], 1) mlp.train(items, targets, 1000, 0.12)
-
-Error: 0.0004576130468043296 at epoch 1000 mlp = MLP(8, [7], 1)	mlp.train(items, targets, 1000, 0.5) 
-Our network believes that [360. 357. 355. 354. 328. 328. 325. 322.] flood levels is [300.83200073]
