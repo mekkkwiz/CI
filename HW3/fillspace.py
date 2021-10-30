@@ -44,7 +44,7 @@ tempForNomalize = [[Input[j][i] for j in range(len(Input))] for i in range(30)]
 nomalized_input_colum_form = [normalize_list(tempForNomalize[i],ref = tempForNomalize[i]) for i in range(30)]
 nomalized_input = [[nomalized_input_colum_form[j][i] for j in range(30)] for i in range(len(Input))]
 
-print(nomalized_input[0])
+# print(nomalized_input[0])
 
 
 

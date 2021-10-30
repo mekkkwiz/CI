@@ -4,6 +4,7 @@ class Network:
         self.loss = None
         self.loss_prime = None
 
+    err_list = []
     # add layer to network
     def add(self, layer):
         self.layers.append(layer)
@@ -53,4 +54,5 @@ class Network:
 
             # calculate average error on all samples
             err /= samples
+            self.err_list.append(err)
             print('epoch %d/%d   error= %f' % (i+1, epochs, err))
